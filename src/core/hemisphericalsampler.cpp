@@ -16,8 +16,8 @@ HemisphericalSampler::HemisphericalSampler()
 Vector3D HemisphericalSampler::getSample(const Vector3D &normal) const
 {
     // Get two i.i.d. random numbers between 0-1
-    double psi1 = (double)std::rand() / RAND_MAX;
-    double psi2 = (double)std::rand() / RAND_MAX;
+    double psi1 = myRandomDouble();
+    double psi2 = myRandomDouble();
 
     // Generate the direction in spherical coordinates (arround (0, 1, 0))
     double theta = std::acos(psi1);
