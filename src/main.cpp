@@ -1,3 +1,4 @@
+//UPF - ACG - 2026_27
 #include <iostream>
 #include <algorithm>
 
@@ -45,8 +46,8 @@ void buildSceneCornellBox(Camera*& cam, Film*& film,
     Material* redDiffuse = new Phong(Vector3D(0.7, 0.2, 0.3), Vector3D(0, 0, 0), 100);
     Material* greenDiffuse = new Phong(Vector3D(0.2, 0.7, 0.3), Vector3D(0, 0, 0), 100);
     Material* greyDiffuse = new Phong(Vector3D(0.8, 0.8, 0.8), Vector3D(0, 0, 0), 100);      
-    Material* blueGlossy_20 = new Phong(Vector3D(0.2, 0.3, 0.8), Vector3D(0.8, 0.8, 0.8), 20);
-    Material* blueGlossy_80 = new Phong(Vector3D(0.2, 0.3, 0.8), Vector3D(0.8, 0.8, 0.8), 80);
+    Material* blueGlossy_20 = new Phong(Vector3D(0.2, 0.3, 0.5), Vector3D(0.8, 0.7, 0.5), 20);
+    Material* blueGlossy_80 = new Phong(Vector3D(0.2, 0.3, 0.5), Vector3D(0.8, 0.7, 0.5), 80);
     Material* cyandiffuse = new Phong(Vector3D(0.2, 0.8, 0.8), Vector3D(0, 0, 0), 100);
 
     //Task 5.3
