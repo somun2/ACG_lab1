@@ -17,6 +17,7 @@
 
 #include "shaders/intersectionshader.h"
 #include "shaders/depthshader.h"
+#include "shaders/normalshader.h"
 
 
 #include "materials/phong.h"
@@ -198,7 +199,7 @@ void PaintImage(Film* film)
         for (size_t col = 0; col < resX; col++)
         { 
             //CHANGE...()
-            Vector3D random_color = Vector3D((double)rand() / RAND_MAX, (double)rand() / RAND_MAX, (double)rand() / RAND_MAX);            
+            Vector3D random_color = Vector3D(col/(float)resX, lin/(float)resY, 0);
             film->setPixelValue(col,lin, random_color);
            
         }
@@ -221,9 +222,10 @@ int main()
     Vector3D intersectionColor(1,0,0);
     
     //First Assignment
-    Shader *shader = new IntersectionShader (intersectionColor, bgColor);
+    //Shader *shader = new IntersectionShader (intersectionColor, bgColor);
     //Shader *depthshader = new DepthShader (intersectionColor,7.5f, bgColor);
     //(... normal, whitted) ...
+	Shader* normalshader = new NormalShader(intersectionColor, 7.5f, bgColor);
 
   
 
@@ -239,11 +241,13 @@ int main()
     //---------------------------------------------------------------------------
 
     //Paint Image ONLY TASK 1
-    PaintImage(film);
+    //PaintImage(film);
 
     // Launch some rays! TASK 2,3,...   
     auto start = high_resolution_clock::now();
     //raytrace(cam, shader, film, myScene.objectsList, myScene.LightSourceList);
+    //raytrace(cam, depthshader, film, myScene.objectsList, myScene.LightSourceList);
+    raytrace(cam, normalshader, film, myScene.objectsList, myScene.LightSourceList);
     auto stop = high_resolution_clock::now();
 
     
