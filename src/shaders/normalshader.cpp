@@ -12,5 +12,15 @@ NormalShader::NormalShader(Vector3D hitColor_, double maxDist_, Vector3D bgColor
 
 Vector3D NormalShader::computeColor(const Ray& r, const std::vector<Shape*>& objList, const std::vector<LightSource*>& lsList) const
 {
-	return color;
+    Intersection its;
+    bool hasInter = Utils::getClosestIntersection(r, objList, its);
+    Vector3D c;
+    double hitDistance;
+    if (hasInter) {
+        c = (its.normal.operator+((1.0,1.0,1.0))).operator/=(2.0);
+        return c;
+    }
+    else {
+        return bgColor;
+    }
 }
