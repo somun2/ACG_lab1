@@ -18,7 +18,7 @@
 #include "shaders/intersectionshader.h"
 #include "shaders/depthshader.h"
 #include "shaders/normalshader.h"
-
+#include "shaders/whittedshader.h"
 
 #include "materials/phong.h"
 #include "materials/emissive.h"
@@ -225,7 +225,8 @@ int main()
     //Shader *shader = new IntersectionShader (intersectionColor, bgColor);
     //Shader *depthshader = new DepthShader (intersectionColor,7.5f, bgColor);
     //(... normal, whitted) ...
-	Shader* normalshader = new NormalShader(intersectionColor, 7.5f, bgColor);
+	Shader* normalshader = new NormalShader(bgColor);
+	Shader* whittedshader = new WhittedShader(intersectionColor, 7.5f, bgColor);
 
   
 
@@ -235,8 +236,8 @@ int main()
     Camera* cam;
     Scene myScene;
     //Create Scene Geometry and Illumiantion
-    buildSceneSphere(cam, film, myScene); //Task 2,3,4;
-    //buildSceneCornellBox(cam, film, myScene); //Task 5
+    //buildSceneSphere(cam, film, myScene); //Task 2,3,4;
+    buildSceneCornellBox(cam, film, myScene); //Task 5
 
     //---------------------------------------------------------------------------
 
@@ -248,8 +249,11 @@ int main()
     //raytrace(cam, shader, film, myScene.objectsList, myScene.LightSourceList);
     //raytrace(cam, depthshader, film, myScene.objectsList, myScene.LightSourceList);
     raytrace(cam, normalshader, film, myScene.objectsList, myScene.LightSourceList);
+    //raytrace(cam, whittedshader, film, myScene.objectsList, myScene.LightSourceList);
     auto stop = high_resolution_clock::now();
 
+    Vector3D camPos = cam->cameraToWorld.transformPoint(Vector3D(0.0, 0.0, 0.0));
+    std::cout << "Camera position (world): " << camPos << std::endl;
     
 
     // Save the final result to file

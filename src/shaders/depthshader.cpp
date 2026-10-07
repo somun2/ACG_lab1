@@ -16,7 +16,7 @@ Vector3D DepthShader::computeColor(const Ray &r, const std::vector<Shape*> &objL
     double c;
     double hitDistance;
     if (hasInter) {
-        hitDistance = its.itsPoint.operator-(r.o).length();
+        hitDistance = (its.itsPoint-(r.o)).length();
         c = 1-(hitDistance / maxDist);
 		if (c < 0) {
 			c = 0;

@@ -12,17 +12,12 @@ rho_d(Kd_), Ks(Ks_), alpha(alpha_){}
 Vector3D Phong::getReflectance(const Vector3D& n, const Vector3D& wo,
     const Vector3D& wi) const {
 
-    //FILL(...)
     double pi = std::acos(-1.0);
-    Vector3D wr = n * (2.0 * dot(n, wi)) - wi;
+    Vector3D wr = n*(2.0*dot(n, wi))-wi;
     double x = dot(wo, wr);
-    if (x < 0) {
-        x = 0;
-    }
-    Vector3D diffuse = rho_d / pi;
-    Vector3D specular = Ks * pow(x, alpha);
-
-};
+	Vector3D r = rho_d/(pi)+(Ks*(pow(x, alpha)));
+	return r;
+}
 
 double Phong::getIndexOfRefraction() const
 {
