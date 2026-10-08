@@ -248,8 +248,8 @@ int main()
     auto start = high_resolution_clock::now();
     //raytrace(cam, shader, film, myScene.objectsList, myScene.LightSourceList);
     //raytrace(cam, depthshader, film, myScene.objectsList, myScene.LightSourceList);
-    raytrace(cam, normalshader, film, myScene.objectsList, myScene.LightSourceList);
-    //raytrace(cam, whittedshader, film, myScene.objectsList, myScene.LightSourceList);
+    //raytrace(cam, normalshader, film, myScene.objectsList, myScene.LightSourceList);
+    raytrace(cam, whittedshader, film, myScene.objectsList, myScene.LightSourceList);
     auto stop = high_resolution_clock::now();
 
     Vector3D camPos = cam->cameraToWorld.transformPoint(Vector3D(0.0, 0.0, 0.0));

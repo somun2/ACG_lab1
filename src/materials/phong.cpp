@@ -1,7 +1,7 @@
 #include "phong.h"
-
+#include "../core/utils.h"
 #include <iostream>
-#include <cmath>
+
 Phong::Phong()
 { }
 
@@ -12,7 +12,8 @@ rho_d(Kd_), Ks(Ks_), alpha(alpha_){}
 Vector3D Phong::getReflectance(const Vector3D& n, const Vector3D& wo,
     const Vector3D& wi) const {
 
-    double pi = std::acos(-1.0);
+
+    double pi = PI;
     Vector3D wr = n*(2.0*dot(n, wi))-wi;
     double x = dot(wo, wr);
 	Vector3D r = rho_d/(pi)+(Ks*(pow(x, alpha)));

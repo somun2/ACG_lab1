@@ -12,6 +12,7 @@
 
 #define PBSTR "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
 #define PBWIDTH 60
+#define PI std::acos(-1.0)
 
 class Utils
 {
