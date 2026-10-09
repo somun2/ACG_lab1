@@ -11,36 +11,37 @@ WhittedShader::WhittedShader(Vector3D hitColor_, double maxDist_, Vector3D bgCol
 {
 }
 
-Vector3D WhittedShader::computeColor(const Ray& r, const std::vector<Shape*>& objList, const std::vector<LightSource*>& lsList) const
+Vector3D WhittedShader::computeColor(const Ray& r, const std::vector<Shape*>& objList,
+    const std::vector<LightSource*>& lsList) const
 {
     Intersection its;
-    bool hasInter = Utils::getClosestIntersection(r, objList, its);
-    Vector3D c;
-    Vector3D Lo = Vector3D(0.0, 0.0, 0.0);
-    
-    if (hasInter) {
-        Vector3D wo = (-r.d).normalized();
-        Vector3D n = its.normal;
-        double pi = PI;
-        for (size_t lsIndex = 0; lsIndex < lsList.size(); lsIndex++) {
-            Vector3D lsPos = lsList.at(lsIndex)->sampleLightPosition();
-            Vector3D wi = (lsPos - its.itsPoint).normalized();
-            Ray lR = Ray(lsPos, -wi);
-			Intersection itsL;
-			bool hasInterL = Utils::getClosestIntersection(lR, objList, itsL);
-            if (hasInterL && (itsL.itsPoint.x != lsPos.x || itsL.itsPoint.y != lsPos.y || itsL.itsPoint.z != lsPos.z)) {
-				printf("Light source %zu is occluded by an object at (%f, %f, %f)\n", lsIndex, itsL.itsPoint.x, itsL.itsPoint.y, itsL.itsPoint.z);
-                continue;
-            }
-            Vector3D brfd = its.shape->getMaterial().getReflectance(n, wo, wi);
-            Vector3D Li = lsList.at(lsIndex)->getIntensity()/(4*pi*pow((lsPos - its.itsPoint).length(), 2));
-            double wi_n = dot(wi,n);
-            Lo += Li * brfd * wi_n;
-        }
-    }
-    else {
+    if (!Utils::getClosestIntersection(r, objList, its)) {
         return bgColor;
     }
-	//printf("Color: %f, %f, %f\n", Lo.x, Lo.y, Lo.z);
-    return Lo; 
+
+    const double eps = 1e-4;
+    const Vector3D n = its.normal;
+    const Vector3D wo = (-r.d).normalized();
+    const Vector3D origin = its.itsPoint + n * eps;
+
+    Vector3D Lo = Vector3D(0.0, 0.0, 0.0);
+
+    for (size_t lsIndex = 0; lsIndex < lsList.size(); lsIndex++) {
+        LightSource* light = lsList.at(lsIndex);
+        Vector3D lsPos = light->sampleLightPosition();
+        Vector3D toLight = lsPos - its.itsPoint;
+        double lightDist = toLight.length();
+        Vector3D wi = toLight/lightDist;
+
+        Intersection itsS;
+        if (Utils::getClosestIntersection(Ray(origin, wi), objList, itsS)&&(itsS.itsPoint-origin).length()<lightDist-eps){
+            continue;
+        }
+
+        double wi_n = std::max(0.0, dot(wi,n));
+        Vector3D brdf = its.shape->getMaterial().getReflectance(n, wo, wi);
+        Lo += light->getIntensity()*brdf*wi_n;
+    }
+
+    return Lo;
 }

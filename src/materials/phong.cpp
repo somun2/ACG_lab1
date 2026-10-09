@@ -14,10 +14,17 @@ Vector3D Phong::getReflectance(const Vector3D& n, const Vector3D& wo,
 
 
     double pi = PI;
-    Vector3D wr = n*(2.0*dot(n, wi))-wi;
+    Vector3D wr = n*(2.0*dot(n, wi)) - wi;
     double x = dot(wo, wr);
-	Vector3D r = rho_d/(pi)+(Ks*(pow(x, alpha)));
-	return r;
+
+    if (x < 0.0) x = 0.0;
+
+    Vector3D r = rho_d / pi;
+    if (x > 0.0) {
+        r += Ks * pow(x, alpha);
+    }
+
+    return r;
 }
 
 double Phong::getIndexOfRefraction() const
