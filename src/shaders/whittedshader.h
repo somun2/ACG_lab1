@@ -9,7 +9,7 @@ class WhittedShader : public Shader
 {
 public:
 	WhittedShader();
-	WhittedShader(Vector3D color_, double maxDist_, Vector3D bgColor_);
+	WhittedShader(Vector3D bgColor_);
 
 	Vector3D computeColor(const Ray& r,
 		const std::vector<Shape*>& objList,
